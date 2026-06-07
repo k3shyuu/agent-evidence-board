@@ -36,3 +36,10 @@ The project is intentionally dependency-light and public-safe: no cookies, bot t
 - Issues/PRs showing active maintenance.
 - Any external users, feedback, or integrations.
 - Example workflows where the gate blocked a bad agent output.
+
+## Maintainer workflows already documented
+
+- Pull request review for agent-generated evidence cards.
+- Issue triage for gate false positives and false negatives.
+- Release management checklist with compile, test, demo, gate, and JSONL export smoke checks.
+- Bounded Codex/API credit use for tests, docs, fixtures, PR review, issue triage, and release notes.

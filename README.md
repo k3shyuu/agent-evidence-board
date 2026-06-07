@@ -113,9 +113,14 @@ LLM research agents often produce useful summaries, but they also overfit snippe
 - [Architecture](docs/ARCHITECTURE.md)
 - [Threat model](docs/THREAT_MODEL.md)
 - [Use cases](docs/USE_CASES.md)
+- [Maintainer workflows](docs/MAINTAINER_WORKFLOWS.md)
 - [Roadmap](ROADMAP.md)
 - [Release checklist](docs/RELEASE_CHECKLIST.md)
 - [Codex for OSS application draft](docs/CODEX_FOR_OSS_APPLICATION_DRAFT.md)
+
+## Maintainer workflows
+
+The project is designed to support pull request review, issue triage, and release management for repositories that accept agent-generated research artifacts. See [Maintainer workflows](docs/MAINTAINER_WORKFLOWS.md) and the example [Evidence Gate GitHub Action](examples/github-action-gate.yml).
 
 ## Security
 

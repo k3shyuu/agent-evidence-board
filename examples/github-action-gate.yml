@@ -1,0 +1,23 @@
+name: Evidence Gate
+
+on:
+  pull_request:
+    paths:
+      - "evidence/**/*.json"
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Agent Evidence Board
+        run: python -m pip install agent-evidence-board
+      - name: Gate evidence cards
+        run: |
+          for card in evidence/**/*.json; do
+            [ -f "$card" ] || continue
+            aeb gate-card "$card" --allow-warnings
+          done

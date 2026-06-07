@@ -9,3 +9,4 @@
 - Add CLI commands: `init-db`, `ingest-url`, `validate-card`, `gate-card`, `demo`, `list`, `export-jsonl`.
 - Add examples and unit tests for publishable and blocked cards.
 - Add CI, issue templates, architecture docs, threat model, release checklist, and Codex for OSS application draft.
+- Add maintainer workflow docs, pull request template, feature request template, and an example GitHub Action for evidence gates.
