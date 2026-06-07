@@ -1,0 +1,23 @@
+{
+  "title": "Blocked example with unknown source",
+  "topic": "security",
+  "claims": [
+    {
+      "claim": "A wallet drain happened.",
+      "source_id": "missing_source",
+      "confidence": "high"
+    }
+  ],
+  "sources_checked": [
+    {
+      "source_id": "source_1",
+      "type": "x",
+      "url": "https://x.com/example/status/1",
+      "access": "preview"
+    }
+  ],
+  "verdict": {
+    "status": "alert_candidate",
+    "summary": "This should be blocked because source text is incomplete."
+  }
+}

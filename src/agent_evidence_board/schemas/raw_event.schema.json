@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-evidence-board.dev/schemas/raw_event.schema.json",
+  "title": "RawEvent",
+  "type": "object",
+  "required": ["title", "body", "url", "captured_at"],
+  "properties": {
+    "title": { "type": "string", "minLength": 1 },
+    "body": { "type": "string" },
+    "url": { "type": "string" },
+    "captured_at": { "type": "string" },
+    "metadata": { "type": "object" }
+  },
+  "additionalProperties": true
+}

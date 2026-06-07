@@ -1,0 +1,46 @@
+{
+  "title": "Example project announced a public agent SDK",
+  "topic": "ai_agents_web3_infra",
+  "claims": [
+    {
+      "claim": "The project announced a public SDK release.",
+      "source_id": "source_1",
+      "confidence": "high"
+    },
+    {
+      "claim": "The release may matter for agent infrastructure builders.",
+      "source_id": "source_1",
+      "confidence": "medium",
+      "missing_check": "No independent adoption data has been checked."
+    }
+  ],
+  "sources_checked": [
+    {
+      "source_id": "source_1",
+      "type": "web",
+      "url": "https://example.com/release",
+      "access": "full",
+      "created_at": "2026-06-07T00:00:00Z"
+    }
+  ],
+  "risks": [
+    "Announcement language may overstate current adoption."
+  ],
+  "unknowns": [
+    "No GitHub activity, user count, or production deployments checked in this example."
+  ],
+  "reviews": [
+    {
+      "reviewer": "example_reviewer",
+      "verdict": "pass_with_warnings",
+      "confidence": "medium",
+      "warnings": [
+        "Treat as a watch item, not a high-confidence call."
+      ]
+    }
+  ],
+  "verdict": {
+    "status": "watch",
+    "summary": "Useful signal, but not enough for a high-confidence call."
+  }
+}

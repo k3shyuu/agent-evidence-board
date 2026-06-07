@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-evidence-board.dev/schemas/judge_decision.schema.json",
+  "title": "JudgeDecision",
+  "type": "object",
+  "required": ["decision", "blockers", "warnings"],
+  "properties": {
+    "decision": { "enum": ["allow_publish", "block_publish", "needs_review"] },
+    "blockers": { "type": "array", "items": { "type": "string" } },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "created_by": { "type": "string" }
+  },
+  "additionalProperties": true
+}

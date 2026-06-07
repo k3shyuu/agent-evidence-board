@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-evidence-board.dev/schemas/evidence_card.schema.json",
+  "title": "EvidenceCard",
+  "type": "object",
+  "required": ["title", "topic", "claims", "sources_checked", "verdict"],
+  "properties": {
+    "title": { "type": "string", "minLength": 1 },
+    "topic": { "type": "string", "minLength": 1 },
+    "claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["claim", "source_id", "confidence"],
+        "properties": {
+          "claim": { "type": "string", "minLength": 1 },
+          "source_id": { "type": "string", "minLength": 1 },
+          "confidence": { "enum": ["high", "medium", "low", "unknown"] },
+          "contradiction": { "type": "string" },
+          "missing_check": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "sources_checked": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["source_id", "type", "url", "access"],
+        "properties": {
+          "source_id": { "type": "string", "minLength": 1 },
+          "type": { "type": "string", "minLength": 1 },
+          "url": { "type": "string" },
+          "access": { "type": "string" },
+          "created_at": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "risks": { "type": "array", "items": { "type": "string" } },
+    "unknowns": { "type": "array", "items": { "type": "string" } },
+    "reviews": { "type": "array", "items": { "type": "object" } },
+    "verdict": {
+      "type": "object",
+      "required": ["status", "summary"],
+      "properties": {
+        "status": { "type": "string" },
+        "summary": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

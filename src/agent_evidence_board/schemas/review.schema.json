@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-evidence-board.dev/schemas/review.schema.json",
+  "title": "Review",
+  "type": "object",
+  "required": ["reviewer", "verdict", "confidence"],
+  "properties": {
+    "reviewer": { "type": "string" },
+    "verdict": { "enum": ["pass", "pass_with_warnings", "watch", "needs_more_research", "block", "reject"] },
+    "confidence": { "enum": ["high", "medium", "low", "unknown"] },
+    "blockers": { "type": "array", "items": { "type": "string" } },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "notes": { "type": "string" }
+  },
+  "additionalProperties": true
+}
