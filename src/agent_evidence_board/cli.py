@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from .board import add_evidence_card, add_raw_event, connect, ensure_source, ensure_topic, list_rows
+from .board import add_evidence_card, add_raw_event, connect, ensure_source, ensure_topic, export_rows, list_rows
 from .capture import capture_url
 from .gate import gate_file, load_json, validate_card
 
@@ -16,15 +16,16 @@ def emit(value: Any) -> None:
 
 
 def cmd_init_db(args: argparse.Namespace) -> int:
-    with connect(args.db):
-        pass
+    conn = connect(args.db)
+    conn.close()
     emit({"ok": True, "db": str(Path(args.db or "work/board.db"))})
     return 0
 
 
 def cmd_ingest_url(args: argparse.Namespace) -> int:
     result = capture_url(args.url, timeout_sec=args.timeout_sec)
-    with connect(args.db) as conn:
+    conn = connect(args.db)
+    try:
         topic_id = ensure_topic(conn, args.topic)
         source_id = ensure_source(
             conn,
@@ -44,6 +45,8 @@ def cmd_ingest_url(args: argparse.Namespace) -> int:
             url=args.url,
             metadata=result.to_dict(),
         )
+    finally:
+        conn.close()
     emit({"ok": result.access_status == "full", "raw_event_id": event_id, "capture": result.to_dict()})
     return 0 if result.access_status == "full" else 2
 
@@ -64,7 +67,8 @@ def cmd_demo(args: argparse.Namespace) -> int:
     card_path = Path(__file__).resolve().parents[2] / "examples" / "sample_intelligence_card.json"
     card = load_json(card_path)
     gate = gate_file(card_path, allow_warnings=True)
-    with connect(args.db) as conn:
+    conn = connect(args.db)
+    try:
         topic_id = ensure_topic(conn, "ai_agents_web3_infra", "AI agents / Web3 infra")
         raw_id = add_raw_event(
             conn,
@@ -76,13 +80,34 @@ def cmd_demo(args: argparse.Namespace) -> int:
             metadata={"demo": True},
         )
         card_id = add_evidence_card(conn, topic_id, card["title"], card, raw_event_id=raw_id, created_by="demo")
+    finally:
+        conn.close()
     emit({"ok": True, "raw_event_id": raw_id, "evidence_card_id": card_id, "gate": gate})
     return 0
 
 
 def cmd_list(args: argparse.Namespace) -> int:
-    with connect(args.db) as conn:
+    conn = connect(args.db)
+    try:
         emit(list_rows(conn, args.table, limit=args.limit))
+    finally:
+        conn.close()
+    return 0
+
+
+def cmd_export_jsonl(args: argparse.Namespace) -> int:
+    conn = connect(args.db)
+    try:
+        rows = export_rows(conn, args.table, limit=args.limit)
+    finally:
+        conn.close()
+
+    output = Path(args.out)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    with output.open("w", encoding="utf-8", newline="\n") as handle:
+        for row in rows:
+            handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+    emit({"ok": True, "table": args.table, "count": len(rows), "out": str(output)})
     return 0
 
 
@@ -124,6 +149,13 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--db", default=None, help="SQLite database path. Defaults to AEB_DB or work/board.db.")
     p.add_argument("--limit", type=int, default=20)
     p.set_defaults(func=cmd_list)
+
+    p = sub.add_parser("export-jsonl", help="Export a board table as JSONL.")
+    p.add_argument("table")
+    p.add_argument("--out", required=True, help="Output JSONL path.")
+    p.add_argument("--db", default=None, help="SQLite database path. Defaults to AEB_DB or work/board.db.")
+    p.add_argument("--limit", type=int, default=None)
+    p.set_defaults(func=cmd_export_jsonl)
     return parser
 
 

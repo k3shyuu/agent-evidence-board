@@ -88,6 +88,7 @@ aeb init-db --db work/board.db
 aeb ingest-url https://example.com --db work/board.db
 aeb validate-card examples/sample_intelligence_card.json
 aeb gate-card examples/sample_intelligence_card.json
+aeb export-jsonl evidence_cards --db work/board.db --out work/evidence_cards.jsonl
 ```
 
 ## Publication gate

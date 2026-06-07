@@ -250,3 +250,16 @@ def list_rows(conn: sqlite3.Connection, table: str, limit: int = 20) -> list[dic
         raise ValueError(f"unsupported table: {table}")
     rows = conn.execute(f"SELECT * FROM {table} ORDER BY id DESC LIMIT ?", (limit,)).fetchall()
     return [dict(row) for row in rows]
+
+
+def export_rows(conn: sqlite3.Connection, table: str, limit: int | None = None) -> list[dict[str, Any]]:
+    allowed = {"topics", "sources", "raw_events", "evidence_cards", "reviews", "judge_decisions", "publications"}
+    if table not in allowed:
+        raise ValueError(f"unsupported table: {table}")
+    sql = f"SELECT * FROM {table} ORDER BY id"
+    params: tuple[Any, ...] = ()
+    if limit is not None:
+        sql += " LIMIT ?"
+        params = (limit,)
+    rows = conn.execute(sql, params).fetchall()
+    return [dict(row) for row in rows]

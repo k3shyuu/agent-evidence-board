@@ -13,6 +13,75 @@ flowchart LR
   Judge --> Publication["publication"]
 ```
 
+## Entity Relationships
+
+```mermaid
+erDiagram
+  topics ||--o{ sources : groups
+  topics ||--o{ raw_events : contains
+  topics ||--o{ evidence_cards : contains
+  sources ||--o{ raw_events : emits
+  raw_events ||--o{ evidence_cards : becomes
+  evidence_cards ||--o{ reviews : receives
+  evidence_cards ||--o{ judge_decisions : produces
+  evidence_cards ||--o{ publications : drafts
+
+  topics {
+    integer id PK
+    string key
+    string title
+    string status
+  }
+
+  sources {
+    integer id PK
+    integer topic_id FK
+    string key
+    string type
+    string url
+    string status
+  }
+
+  raw_events {
+    integer id PK
+    integer topic_id FK
+    integer source_id FK
+    string title
+    string url
+    string dedupe_hash
+    string status
+  }
+
+  evidence_cards {
+    integer id PK
+    integer raw_event_id FK
+    integer topic_id FK
+    string title
+    string status
+  }
+
+  reviews {
+    integer id PK
+    integer evidence_card_id FK
+    string reviewer
+    string verdict
+    string confidence
+  }
+
+  judge_decisions {
+    integer id PK
+    integer evidence_card_id FK
+    string decision
+  }
+
+  publications {
+    integer id PK
+    integer evidence_card_id FK
+    string channel
+    string status
+  }
+```
+
 ## Tables
 
 - `topics`: broad research areas.

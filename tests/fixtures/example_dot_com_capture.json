@@ -1,0 +1,11 @@
+{
+  "url": "https://example.com",
+  "access_status": "full",
+  "capture_method": "direct_http",
+  "title": "https://example.com",
+  "text": "Example Domain\n\nThis domain is for use in documentation examples without needing permission. Avoid use in operations.",
+  "author": "",
+  "created_at": "",
+  "media_urls": [],
+  "failure_reason": ""
+}
